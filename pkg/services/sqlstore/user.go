@@ -30,7 +30,7 @@ func (ss *SQLStore) addUserQueryAndCommandHandlers() {
 	bus.AddHandler("sql", ss.GetUserProfile)
 	bus.AddHandler("sql", SearchUsers)
 	bus.AddHandler("sql", ss.GetUserOrgList)
-	bus.AddHandler("sql", DisableUser)
+	bus.AddHandler("sql", ss.DisableUser)
 	bus.AddHandler("sql", ss.BatchDisableUsers)
 	bus.AddHandler("sql", ss.DeleteUser)
 	bus.AddHandler("sql", ss.SetUserHelpFlag)
@@ -721,7 +721,7 @@ func SearchUsers(ctx context.Context, query *models.SearchUsersQuery) error {
 	return err
 }
 
-func DisableUser(ctx context.Context, cmd *models.DisableUserCommand) error {
+func (ss *SQLStore) DisableUser(ctx context.Context, cmd *models.DisableUserCommand) error {
 	user := models.User{}
 	sess := x.Table("user")
 
