@@ -26,6 +26,12 @@ type ProvisioningStore interface {
 	SetProvenance(o models.ProvisionedObject, p models.Provenance) error
 }
 
+type TransactionalProvisioningStore interface {
+	GetProvenance(o models.ProvisionedObject) (models.Provenance, error)
+	// TODO: API to query all provenances for a specific type?
+	SetProvenanceTransactional(o models.ProvisionedObject, p models.Provenance, uow UnitOfWork) UnitOfWork
+}
+
 func (st DBstore) GetProvenance(o models.ProvisionedObject) (models.Provenance, error) {
 	recordType := o.GetResourceTypeIdentifier()
 	recordKey := o.GetResourceUniqueIdentifier()
