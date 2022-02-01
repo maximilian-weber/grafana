@@ -60,7 +60,7 @@ func TestProvisioningStore(t *testing.T) {
 		}
 		xact := store.NewTransaction(dbstore.SQLStore)
 
-		xact = dbstore.SetProvenanceTransactional(&rule, models.ProvenanceFile, xact)
+		dbstore.SetProvenanceTransactional(&rule, models.ProvenanceFile, xact)
 
 		provenance, err := dbstore.GetProvenance(&rule)
 		require.NoError(t, err)
