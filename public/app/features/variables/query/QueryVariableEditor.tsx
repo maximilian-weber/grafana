@@ -8,9 +8,7 @@ import { DataSourceInstanceSettings, getDataSourceRef, LoadingState, SelectableV
 
 import { SelectionOptionsEditor } from '../editor/SelectionOptionsEditor';
 import { QueryVariableModel, VariableRefresh, VariableSort, VariableWithMultiSupport } from '../types';
-import { QueryVariableEditorState } from './reducer';
 import { changeQueryVariableDataSource, changeQueryVariableQuery, initQueryVariableEditor } from './actions';
-import { VariableEditorState } from '../editor/reducer';
 import { OnPropChangeArguments, VariableEditorProps } from '../editor/types';
 import { StoreState } from '../../../types';
 import { toVariableIdentifier } from '../state/types';
@@ -23,7 +21,7 @@ import { QueryVariableRefreshSelect } from './QueryVariableRefreshSelect';
 import { QueryVariableSortSelect } from './QueryVariableSortSelect';
 
 const mapStateToProps = (state: StoreState) => ({
-  editor: state.templating.editor as VariableEditorState<QueryVariableEditorState>,
+  editor: state.templating.editor,
 });
 
 const mapDispatchToProps = {
@@ -115,7 +113,13 @@ export class QueryVariableEditorUnConnected extends PureComponent<Props, State> 
 
   renderQueryEditor = () => {
     const { editor, variable } = this.props;
-    if (!editor.extended || !editor.extended.dataSource || !editor.extended.VariableQueryEditor) {
+
+    if (
+      !editor.extended ||
+      editor.extended.kind !== 'query' ||
+      !editor.extended.dataSource ||
+      !editor.extended.VariableQueryEditor
+    ) {
       return null;
     }
 

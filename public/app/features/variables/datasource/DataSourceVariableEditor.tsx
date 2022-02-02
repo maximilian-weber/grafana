@@ -6,7 +6,6 @@ import { DataSourceVariableModel, VariableWithMultiSupport } from '../types';
 import { OnPropChangeArguments, VariableEditorProps } from '../editor/types';
 import { SelectionOptionsEditor } from '../editor/SelectionOptionsEditor';
 import { VariableEditorState } from '../editor/reducer';
-import { DataSourceVariableEditorState } from './reducer';
 import { initDataSourceVariableEditor } from './actions';
 import { StoreState } from '../../../types';
 import { connectWithStore } from '../../../core/utils/connectWithReduxStore';
@@ -19,7 +18,7 @@ import { VariableTextField } from '../editor/VariableTextField';
 export interface OwnProps extends VariableEditorProps<DataSourceVariableModel> {}
 
 interface ConnectedProps {
-  editor: VariableEditorState<DataSourceVariableEditorState>;
+  editor: VariableEditorState;
 }
 
 interface DispatchProps {
@@ -54,11 +53,14 @@ export class DataSourceVariableEditorUnConnected extends PureComponent<Props> {
   };
 
   getSelectedDataSourceTypeValue = (): string => {
-    if (!this.props.editor.extended?.dataSourceTypes?.length) {
+    const { extended } = this.props.editor;
+
+    if (extended?.kind !== 'datasource' || !extended?.dataSourceTypes.length) {
       return '';
     }
-    const foundItem = this.props.editor.extended?.dataSourceTypes.find((ds) => ds.value === this.props.variable.query);
-    const value = foundItem ? foundItem.value : this.props.editor.extended?.dataSourceTypes[0].value;
+
+    const foundItem = extended.dataSourceTypes.find((ds) => ds.value === this.props.variable.query);
+    const value = foundItem ? foundItem.value : extended.dataSourceTypes[0].value;
     return value ?? '';
   };
 
@@ -67,10 +69,14 @@ export class DataSourceVariableEditorUnConnected extends PureComponent<Props> {
   };
 
   render() {
-    const typeOptions = this.props.editor.extended?.dataSourceTypes?.length
-      ? this.props.editor.extended?.dataSourceTypes?.map((ds) => ({ value: ds.value ?? '', label: ds.text }))
-      : [];
-    const typeValue = typeOptions.find((o) => o.value === this.props.variable.query) ?? typeOptions[0];
+    const { editor, variable, changeVariableMultiValue } = this.props;
+
+    const typeOptions =
+      editor.extended?.kind === 'datasource' && editor.extended?.dataSourceTypes?.length
+        ? editor.extended?.dataSourceTypes?.map((ds) => ({ value: ds.value ?? '', label: ds.text }))
+        : [];
+
+    const typeValue = typeOptions.find((o) => o.value === variable.query) ?? typeOptions[0];
 
     return (
       <VerticalGroup spacing="xs">
@@ -108,9 +114,9 @@ export class DataSourceVariableEditorUnConnected extends PureComponent<Props> {
           </VerticalGroup>
 
           <SelectionOptionsEditor
-            variable={this.props.variable}
+            variable={variable}
             onPropChange={this.onSelectionOptionsChange}
-            onMultiChanged={this.props.changeVariableMultiValue}
+            onMultiChanged={changeVariableMultiValue}
           />
         </VerticalGroup>
       </VerticalGroup>
@@ -118,9 +124,11 @@ export class DataSourceVariableEditorUnConnected extends PureComponent<Props> {
   }
 }
 
-const mapStateToProps: MapStateToProps<ConnectedProps, OwnProps, StoreState> = (state, ownProps) => ({
-  editor: state.templating.editor as VariableEditorState<DataSourceVariableEditorState>,
-});
+const mapStateToProps: MapStateToProps<ConnectedProps, OwnProps, StoreState> = (state, ownProps) => {
+  return {
+    editor: state.templating.editor,
+  };
+};
 
 const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = {
   initDataSourceVariableEditor,
