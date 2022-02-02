@@ -3,7 +3,16 @@ import { featureEnabled } from '@grafana/runtime';
 import { NavModelItem, NavModel } from '@grafana/data';
 import config from 'app/core/config';
 import { ProBadge } from 'app/core/components/Upgrade/ProBadge';
-import { contextSrv } from 'app/core/core';
+import { contextSrv } from 'app/core/services/context_srv';
+
+const loadingTeam = {
+  avatarUrl: 'public/img/user_profile.png',
+  id: 1,
+  name: 'Loading',
+  email: 'loading',
+  memberCount: 0,
+  permission: TeamPermissionLevel.Member,
+};
 
 export function buildNavModel(team: Team): NavModelItem {
   const navModel: NavModelItem = {
@@ -13,12 +22,27 @@ export function buildNavModel(team: Team): NavModelItem {
     url: '',
     text: team.name,
     breadcrumbs: [{ title: 'Teams', url: 'org/teams' }],
+    children: [
+      // With FGAC this tab will always be available (but not always editable)
+      // With Legacy it will be hidden should the user not see it
+      {
+        active: false,
+        icon: 'sliders-v-alt',
+        id: `team-settings-${team.id}`,
+        text: 'Settings',
+        url: `org/teams/edit/${team.id}/settings`,
+      },
+    ],
   };
 
-  navModel.children = [] as NavModelItem[];
-
-  if (contextSrv.hasPermissionInMetadata(AccessControlAction.ActionTeamsPermissionsRead, team)) {
-    navModel.children.push({
+  // While team is loading we leave the members tab
+  // With FGAC the Members tab is available when user has ActionTeamsPermissionsRead for this team
+  // With Legacy it will always be present
+  if (
+    team === loadingTeam ||
+    contextSrv.hasPermissionInMetadata(AccessControlAction.ActionTeamsPermissionsRead, team)
+  ) {
+    navModel.children!.unshift({
       active: false,
       icon: 'users-alt',
       id: `team-members-${team.id}`,
@@ -26,16 +50,6 @@ export function buildNavModel(team: Team): NavModelItem {
       url: `org/teams/edit/${team.id}/members`,
     });
   }
-
-  // With FGAC this tab will always be available
-  // With Legacy it will be hidden should the user not see it
-  navModel.children.push({
-    active: false,
-    icon: 'sliders-v-alt',
-    id: `team-settings-${team.id}`,
-    text: 'Settings',
-    url: `org/teams/edit/${team.id}/settings`,
-  });
 
   const teamGroupSync = {
     active: false,
@@ -55,14 +69,7 @@ export function buildNavModel(team: Team): NavModelItem {
 }
 
 export function getTeamLoadingNav(pageName: string): NavModel {
-  const main = buildNavModel({
-    avatarUrl: 'public/img/user_profile.png',
-    id: 1,
-    name: 'Loading',
-    email: 'loading',
-    memberCount: 0,
-    permission: TeamPermissionLevel.Member,
-  });
+  const main = buildNavModel(loadingTeam);
 
   let node: NavModelItem;
 
