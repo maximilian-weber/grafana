@@ -1,7 +1,6 @@
 import config from '../../core/config';
 import { extend } from 'lodash';
 import { rangeUtil, WithAccessControlMetadata } from '@grafana/data';
-import { featureEnabled } from '@grafana/runtime';
 import { AccessControlAction, UserPermission } from 'app/types';
 
 export class User {
