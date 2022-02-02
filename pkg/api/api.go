@@ -10,7 +10,6 @@ import (
 	"github.com/grafana/grafana/pkg/infra/log"
 	"github.com/grafana/grafana/pkg/middleware"
 	"github.com/grafana/grafana/pkg/models"
-	"github.com/grafana/grafana/pkg/services/accesscontrol"
 	ac "github.com/grafana/grafana/pkg/services/accesscontrol"
 	acmiddleware "github.com/grafana/grafana/pkg/services/accesscontrol/middleware"
 	"github.com/grafana/grafana/pkg/services/featuremgmt"
@@ -59,10 +58,10 @@ func (hs *HTTPServer) registerRoutes() {
 	r.Get("/org/users", authorize(reqOrgAdmin, ac.EvalPermission(ac.ActionOrgUsersRead)), hs.Index)
 	r.Get("/org/users/new", reqOrgAdmin, hs.Index)
 	r.Get("/org/users/invite", authorize(reqOrgAdmin, ac.EvalPermission(ac.ActionUsersCreate)), hs.Index)
-	r.Get("/org/teams", authorize(reqCanAccessTeams, ac.EvalPermission(accesscontrol.ActionTeamsRead)), hs.Index)
+	r.Get("/org/teams", authorize(reqCanAccessTeams, ac.EvalPermission(ac.ActionTeamsRead)), hs.Index)
 	// TODO verify that there is no other view than edit and new
 	r.Get("/org/teams/edit/*", authorize(reqCanAccessTeams, teamsAccessEvaluator), hs.Index)
-	r.Get("/org/teams/new", authorize(reqCanAccessTeams, ac.EvalPermission(accesscontrol.ActionTeamsCreate)), hs.Index)
+	r.Get("/org/teams/new", authorize(reqCanAccessTeams, ac.EvalPermission(ac.ActionTeamsCreate)), hs.Index)
 	r.Get("/org/serviceaccounts", middleware.ReqOrgAdmin, hs.Index)
 	r.Get("/org/serviceaccounts/:serviceAccountId", middleware.ReqOrgAdmin, hs.Index)
 	r.Get("/org/apikeys/", reqOrgAdmin, hs.Index)
