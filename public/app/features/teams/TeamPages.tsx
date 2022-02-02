@@ -136,6 +136,17 @@ export class TeamPages extends PureComponent<Props, State> {
     const { members, team } = this.props;
     const currentPage = this.getCurrentPage();
 
+    const canReadTeam = contextSrv.hasAccessInMetadata(
+      AccessControlAction.ActionTeamsRead,
+      team!,
+      isSignedInUserTeamAdmin
+    );
+    const canReadTeamPermissions = contextSrv.hasAccessInMetadata(
+      AccessControlAction.ActionTeamsPermissionsRead,
+      team!,
+      isSignedInUserTeamAdmin
+    );
+
     switch (currentPage) {
       case PageTypes.Members:
         if (config.featureToggles['accesscontrol']) {
@@ -144,9 +155,9 @@ export class TeamPages extends PureComponent<Props, State> {
           return <TeamMembers syncEnabled={isSyncEnabled} members={members} />;
         }
       case PageTypes.Settings:
-        return isSignedInUserTeamAdmin && <TeamSettings team={team!} />;
+        return canReadTeam && <TeamSettings team={team!} />;
       case PageTypes.GroupSync:
-        if (isSignedInUserTeamAdmin && isSyncEnabled) {
+        if (canReadTeamPermissions && isSyncEnabled) {
           return <TeamGroupSync />;
         } else if (config.featureHighlights.enabled) {
           return (
