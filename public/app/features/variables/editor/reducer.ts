@@ -3,31 +3,28 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { VariablePayload } from '../state/types';
 import { VariableQueryEditorType } from '../types';
 
-interface AdHocVariableEditorState {
-  kind: 'adhoc';
+export interface AdHocVariableEditorState {
   infoText: string;
   dataSources: Array<{ text: string; value: DataSourceRef | null }>;
 }
 
-interface DataSourceVariableEditorState {
-  kind: 'datasource';
+export interface DataSourceVariableEditorState {
   dataSourceTypes: Array<{ text: string; value: string }>;
 }
 
-interface QueryVariableEditorState {
-  kind: 'query';
+export interface QueryVariableEditorState {
   VariableQueryEditor: VariableQueryEditorType;
   dataSource: DataSourceApi | null;
 }
 
 type VariableEditorExtension = AdHocVariableEditorState | DataSourceVariableEditorState | QueryVariableEditorState;
 
-export interface VariableEditorState {
+export interface VariableEditorState<Extension extends VariableEditorExtension = VariableEditorExtension> {
   id: string;
   name: string;
   errors: Record<string, string>;
   isValid: boolean;
-  extended: VariableEditorExtension | null;
+  extended: Extension | null;
 }
 
 export const initialVariableEditorState: VariableEditorState = {

@@ -9,9 +9,10 @@ import { changeVariableDatasource, initAdHocVariableEditor } from './actions';
 import { StoreState } from 'app/types';
 import { VariableSectionHeader } from '../editor/VariableSectionHeader';
 import { VariableSelectField } from '../editor/VariableSelectField';
+import { getAdhocVariableState } from '../editor/selectors';
 
 const mapStateToProps = (state: StoreState) => ({
-  editor: state.templating.editor,
+  editor: getAdhocVariableState(state.templating.editor),
 });
 
 const mapDispatchToProps = {
@@ -36,8 +37,9 @@ export class AdHocVariableEditorUnConnected extends PureComponent<Props> {
 
   render() {
     const { variable, editor } = this.props;
-    const dataSources = (editor.extended?.kind === 'adhoc' && editor.extended?.dataSources) || [];
-    const infoText = (editor.extended?.kind === 'adhoc' && editor.extended?.infoText) || null;
+
+    const dataSources = editor?.extended?.dataSources || [];
+    const infoText = editor?.extended?.infoText || null;
     const options = dataSources.map((ds) => ({ label: ds.text, value: ds.value }));
     const value = options.find((o) => o.value?.uid === variable.datasource?.uid) ?? options[0];
 

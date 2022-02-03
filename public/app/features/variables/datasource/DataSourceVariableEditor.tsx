@@ -14,6 +14,7 @@ import { VariableSectionHeader } from '../editor/VariableSectionHeader';
 import { VariableSelectField } from '../editor/VariableSelectField';
 import { SelectableValue } from '@grafana/data';
 import { VariableTextField } from '../editor/VariableTextField';
+import { getDatasourceVariableState } from '../editor/selectors';
 
 export interface OwnProps extends VariableEditorProps<DataSourceVariableModel> {}
 
@@ -53,9 +54,9 @@ export class DataSourceVariableEditorUnConnected extends PureComponent<Props> {
   };
 
   getSelectedDataSourceTypeValue = (): string => {
-    const { extended } = this.props.editor;
+    const extended = getDatasourceVariableState(this.props.editor);
 
-    if (extended?.kind !== 'datasource' || !extended?.dataSourceTypes.length) {
+    if (!extended?.dataSourceTypes.length) {
       return '';
     }
 
@@ -70,11 +71,11 @@ export class DataSourceVariableEditorUnConnected extends PureComponent<Props> {
 
   render() {
     const { editor, variable, changeVariableMultiValue } = this.props;
+    const extended = getDatasourceVariableState(editor);
 
-    const typeOptions =
-      editor.extended?.kind === 'datasource' && editor.extended?.dataSourceTypes?.length
-        ? editor.extended?.dataSourceTypes?.map((ds) => ({ value: ds.value ?? '', label: ds.text }))
-        : [];
+    const typeOptions = extended?.dataSourceTypes?.length
+      ? extended.dataSourceTypes?.map((ds) => ({ value: ds.value ?? '', label: ds.text }))
+      : [];
 
     const typeValue = typeOptions.find((o) => o.value === variable.query) ?? typeOptions[0];
 
