@@ -8,7 +8,7 @@ aliases = ["/docs/sources/panels/query-a-data-source/about-queries/"]
 
 _Queries_ are how Grafana panels communicate with data sources to get data for the visualization. A query is a question written in the query language used by the data source. How often the query is sent to the data source and how many data points are collected can be adjusted in the panel data source options.
 
-Use you a query editor to write a query. Each data source has its own query editor that we have customized to include the features and capabilities of the data source. Grafana supports up to 26 queries per panel.
+Use you a query editor to write a query. Each data source has its own query editor that we have customized to include the features and capabilities of the data source. Grafana supports a unlimited number of queries per panel.
 
 > Important! You must be familiar with the query language of the data source. For more information about data sources, refer to [Data sources](../../../datasources/).
 
