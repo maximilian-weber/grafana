@@ -10,7 +10,11 @@ export function useURLSearchParams(): [
   const queryParams = useMemo(() => new URLSearchParams(search), [search]);
 
   const update = useCallback((searchValues: Record<string, string | string[] | undefined>, replace?: boolean) => {
-    locationService.partial(searchValues, replace);
+    if (replace) {
+      locationService.replacePartial(searchValues);
+    } else {
+      locationService.pushPartial(searchValues);
+    }
   }, []);
 
   return [queryParams, update];

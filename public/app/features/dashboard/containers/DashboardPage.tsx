@@ -191,12 +191,12 @@ export class UnthemedDashboardPage extends PureComponent<Props, State> {
 
     if (this.state.editPanelAccessDenied) {
       this.props.notifyApp(createErrorNotification('Permission to edit panel denied'));
-      locationService.partial({ editPanel: null });
+      locationService.pushPartial({ editPanel: null });
     }
 
     if (this.state.panelNotFound) {
       this.props.notifyApp(createErrorNotification(`Panel not found`));
-      locationService.partial({ editPanel: null, viewPanel: null });
+      locationService.pushPartial({ editPanel: null, viewPanel: null });
     }
   }
 

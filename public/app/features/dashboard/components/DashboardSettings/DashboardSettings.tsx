@@ -29,7 +29,7 @@ export interface SettingsPage {
   component: React.ReactNode;
 }
 
-const onClose = () => locationService.partial({ editview: null });
+const onClose = () => locationService.pushPartial({ editview: null });
 
 const MakeEditable = (props: { onMakeEditable: () => any }) => (
   <div>

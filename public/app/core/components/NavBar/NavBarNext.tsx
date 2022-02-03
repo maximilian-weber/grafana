@@ -16,7 +16,7 @@ import { Branding } from '../Branding/Branding';
 import { connect, ConnectedProps } from 'react-redux';
 
 const onOpenSearch = () => {
-  locationService.partial({ search: 'open' });
+  locationService.pushPartial({ search: 'open' });
 };
 
 const searchItem: NavModelItem = {

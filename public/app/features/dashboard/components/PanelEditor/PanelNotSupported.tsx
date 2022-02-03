@@ -11,7 +11,7 @@ export interface Props {
 
 export function PanelNotSupported({ message }: Props): JSX.Element {
   const onBackToQueries = useCallback(() => {
-    locationService.partial({ tab: PanelEditorTabId.Query });
+    locationService.pushPartial({ tab: PanelEditorTabId.Query });
   }, []);
 
   return (

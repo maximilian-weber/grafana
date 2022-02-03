@@ -12,7 +12,7 @@ export const PanelHeaderNotices: FC<Props> = ({ frames, panelId }) => {
   const openInspect = useCallback(
     (e: React.SyntheticEvent, tab: string) => {
       e.stopPropagation();
-      locationService.partial({ inspect: panelId, inspectTab: tab });
+      locationService.pushPartial({ inspect: panelId, inspectTab: tab });
     },
     [panelId]
   );

@@ -237,7 +237,7 @@ describe('timeSrv', () => {
     });
 
     it('should update location so that bool params are preserved', () => {
-      locationService.partial({ kiosk: true });
+      locationService.pushPartial({ kiosk: true });
 
       timeSrv.setTime({ from: 'now-1h', to: 'now-10s' });
       timeSrv.setTime({ from: 'now-1h', to: 'now-10s' });

@@ -549,7 +549,7 @@ export const variableUpdated = (
     return Promise.all(promises).then(() => {
       if (emitChangeEvents) {
         events.publish(new VariablesChanged(event));
-        locationService.partial(getQueryWithVariables(getState));
+        locationService.pushPartial(getQueryWithVariables(getState));
       }
     });
   };

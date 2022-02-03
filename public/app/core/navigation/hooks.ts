@@ -9,8 +9,11 @@ export function useUrlParams(): UseUrlParamsResult {
   const params = new URLSearchParams(location.search);
 
   const updateUrlParams = (params: Record<string, any>, replace?: boolean) => {
-    // Should find a way to use history directly here
-    locationService.partial(params, replace);
+    if (replace) {
+      locationService.replacePartial(params);
+    } else {
+      locationService.pushPartial(params);
+    }
   };
 
   return [params, updateUrlParams];

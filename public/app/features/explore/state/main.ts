@@ -75,7 +75,11 @@ export const stateSave = (options?: { replace?: boolean }): ThunkResult<void> =>
     lastSavedUrl.right = urlStates.right;
     lastSavedUrl.left = urlStates.left;
 
-    locationService.partial({ ...urlStates }, options?.replace);
+    if (options?.replace) {
+      locationService.replacePartial({ ...urlStates });
+    } else {
+      locationService.pushPartial({ ...urlStates });
+    }
   };
 };
 
@@ -104,7 +108,7 @@ export const splitOpen: SplitOpen = (options): ThunkResult<void> => {
     }
 
     const urlState = serializeStateToUrlParam(rightUrlState);
-    locationService.partial({ right: urlState }, true);
+    locationService.replacePartial({ right: urlState });
   };
 };
 

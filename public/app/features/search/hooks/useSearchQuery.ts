@@ -15,7 +15,7 @@ import {
 import { DashboardQuery, SearchLayout } from '../types';
 import { hasFilters, parseRouteParams } from '../utils';
 
-const updateLocation = debounce((query) => locationService.partial(query), 300);
+const updateLocation = debounce((query) => locationService.pushPartial(query), 300);
 
 export const useSearchQuery = (defaults: Partial<DashboardQuery>) => {
   const queryParams = parseRouteParams(locationService.getSearchObject());

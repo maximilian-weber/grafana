@@ -132,7 +132,7 @@ describe('DashboardSearch', () => {
   });
 
   it('should call search api with provided search params', async () => {
-    locationService.partial({ query: 'test query', tag: ['tag1'], sort: 'asc' });
+    locationService.pushPartial({ query: 'test query', tag: ['tag1'], sort: 'asc' });
     setup({});
 
     await waitFor(() => {

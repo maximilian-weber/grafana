@@ -60,7 +60,7 @@ class DashNav extends PureComponent<Props> {
   }
 
   onClose = () => {
-    locationService.partial({ viewPanel: null });
+    locationService.pushPartial({ viewPanel: null });
   };
 
   onToggleTVMode = () => {
@@ -68,7 +68,7 @@ class DashNav extends PureComponent<Props> {
   };
 
   onOpenSettings = () => {
-    locationService.partial({ editview: 'settings' });
+    locationService.pushPartial({ editview: 'settings' });
   };
 
   onStarDashboard = () => {

@@ -42,7 +42,7 @@ describe('Render', () => {
   it('should not render when in kiosk mode', async () => {
     setup();
 
-    locationService.partial({ kiosk: 'full' });
+    locationService.pushPartial({ kiosk: 'full' });
     const sidemenu = screen.queryByTestId('sidemenu');
     expect(sidemenu).not.toBeInTheDocument();
   });

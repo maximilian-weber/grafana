@@ -81,7 +81,7 @@ export const AddPanelWidgetUnconnected: React.FC<Props> = ({ panel, dashboard })
     dashboard.addPanel(newPanel);
     dashboard.removePanel(panel);
 
-    locationService.partial({ editPanel: newPanel.id });
+    locationService.pushPartial({ editPanel: newPanel.id });
   };
 
   const onPasteCopiedPanel = (panelPluginInfo: PanelPluginInfo) => {

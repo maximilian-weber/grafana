@@ -89,16 +89,12 @@ The following example shows how to update a variable called `service`.
 - `replace: true` tells Grafana to update the current URL state, rather than creating a new history entry.
 
 ```ts
-import { getLocationSrv } from '@grafana/runtime';
+import { locationService } from '@grafana/runtime';
 ```
 
 ```ts
-getLocationSrv().update({
-  query: {
-    'var-service': 'billing',
-  },
-  partial: true,
-  replace: true,
+locationService.replacePartial({
+  'var-service': 'billing',
 });
 ```
 

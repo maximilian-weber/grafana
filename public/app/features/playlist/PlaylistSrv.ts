@@ -108,7 +108,7 @@ export class PlaylistSrv {
     }
 
     if (locationService.getSearchObject().kiosk) {
-      locationService.partial({ kiosk: null });
+      locationService.pushPartial({ kiosk: null });
     }
   }
 }

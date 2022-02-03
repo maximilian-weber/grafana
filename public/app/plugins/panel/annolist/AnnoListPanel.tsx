@@ -149,7 +149,7 @@ export class AnnoListPanel extends PureComponent<Props, State> {
     }
 
     if (current?.id === anno.dashboardId) {
-      locationService.partial(params);
+      locationService.pushPartial(params);
       return;
     }
 

@@ -144,7 +144,7 @@ export function initDashboard(args: InitDashboardArgs): ThunkResult<void> {
 
     if (!queryParams.orgId) {
       // TODO this is currently not possible with the LocationService API
-      locationService.partial({ orgId: storeState.user.orgId }, true);
+      locationService.replacePartial({ orgId: storeState.user.orgId });
     }
 
     // init services

@@ -224,7 +224,7 @@ export class TimeSrv {
     if (!interval) {
       // Clear URL state
       if (currentUrlState.refresh) {
-        locationService.partial({ refresh: null }, true);
+        locationService.replacePartial({ refresh: null });
       }
 
       return;
@@ -241,7 +241,7 @@ export class TimeSrv {
     const refresh = this.contextSrv.getValidInterval(interval);
 
     if (currentUrlState.refresh !== refresh) {
-      locationService.partial({ refresh }, true);
+      locationService.replacePartial({ refresh });
     }
   }
 
@@ -300,7 +300,7 @@ export class TimeSrv {
       urlParams.from = urlRange.from.toString();
       urlParams.to = urlRange.to.toString();
 
-      locationService.partial(urlParams);
+      locationService.pushPartial(urlParams);
     }
 
     this.refreshDashboard();

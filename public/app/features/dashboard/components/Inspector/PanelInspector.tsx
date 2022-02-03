@@ -36,7 +36,7 @@ const PanelInspectorUnconnected: React.FC<Props> = ({ panel, dashboard, plugin }
   const defaultTab = new URLSearchParams(location.search).get('inspectTab') as InspectTab;
 
   const onClose = () => {
-    locationService.partial({
+    locationService.pushPartial({
       inspect: null,
       inspectTab: null,
     });

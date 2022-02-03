@@ -19,7 +19,7 @@ import { NavBarItemWithoutMenu } from './NavBarItemWithoutMenu';
 const homeUrl = config.appSubUrl || '/';
 
 const onOpenSearch = () => {
-  locationService.partial({ search: 'open' });
+  locationService.pushPartial({ search: 'open' });
 };
 
 const searchItem: NavModelItem = {

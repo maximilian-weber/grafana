@@ -91,7 +91,7 @@ export class AngularLocationWrapper {
     }
 
     if (search && arguments.length > 1) {
-      locationService.partial({
+      locationService.pushPartial({
         [search]: paramValue,
       });
 

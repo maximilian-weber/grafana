@@ -19,7 +19,7 @@ export function toggleKioskMode() {
       kiosk = 'tv';
   }
 
-  locationService.partial({ kiosk });
+  locationService.pushPartial({ kiosk });
 }
 
 export function getKioskMode(queryParam?: UrlQueryValue): KioskMode {
@@ -36,5 +36,5 @@ export function getKioskMode(queryParam?: UrlQueryValue): KioskMode {
 }
 
 export function exitKioskMode() {
-  locationService.partial({ kiosk: null });
+  locationService.pushPartial({ kiosk: null });
 }

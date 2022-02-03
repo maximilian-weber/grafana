@@ -5,23 +5,23 @@ import { attachDebugger, createLogger } from '@grafana/ui';
 import { config } from '../config';
 
 /**
- * @alpha
+ * @public
  * A wrapper to help work with browser location and history
  */
 export interface LocationService {
+  /** @deprecated Will be removed in Grafana 9, use pushPartial or replacePartial instead. */
   partial: (query: Record<string, any>, replace?: boolean) => void;
-  push: (location: H.Path | H.LocationDescriptor<any>) => void;
-  replace: (location: H.Path | H.LocationDescriptor<any>) => void;
-  reload: () => void;
-  getLocation: () => H.Location;
-  getHistory: () => H.History;
-  getSearch: () => URLSearchParams;
-  getSearchObject: () => UrlQueryMap;
-
-  /**
-   * This is from the old LocationSrv interface
-   * @deprecated use partial, push or replace instead */
-  update: (update: LocationUpdate) => void;
+  pushPartial(search: Record<string, any>): void;
+  replacePartial(search: Record<string, any>): void;
+  push(location: H.LocationDescriptor<any>): void;
+  replace(location: H.LocationDescriptor<any>): void;
+  reload(): void;
+  getLocation(): H.Location;
+  getHistory(): H.History;
+  getSearch(): URLSearchParams;
+  getSearchObject(): UrlQueryMap;
+  /** @deprecated Will be removed in Grafana 9, use partial, push or replace instead */
+  update(update: LocationUpdate): void;
 }
 
 /** @internal */
@@ -44,6 +44,32 @@ export class HistoryWrapper implements LocationService {
     this.getLocation = this.getLocation.bind(this);
   }
 
+  pushPartial(search: Record<string, any>): void {
+    const updatedUrl = this.partialUrl(search);
+    this.history.push(updatedUrl, this.history.location.state);
+  }
+
+  replacePartial(search: Record<string, any>): void {
+    const updatedUrl = this.partialUrl(search);
+    this.history.replace(updatedUrl, this.history.location.state);
+  }
+
+  private partialUrl(search: Record<string, any>): string {
+    const currentLocation = this.history.location;
+    const newQuery = this.getSearchObject();
+
+    for (const key of Object.keys(search)) {
+      // removing params with null | undefined
+      if (search[key] === null || search[key] === undefined) {
+        delete newQuery[key];
+      } else {
+        newQuery[key] = search[key];
+      }
+    }
+
+    return urlUtil.renderUrl(currentLocation.pathname, newQuery);
+  }
+
   getHistory() {
     return this.history;
   }
@@ -52,33 +78,22 @@ export class HistoryWrapper implements LocationService {
     return new URLSearchParams(this.history.location.search);
   }
 
+  /** @deprecated Will be removed in Grafana 9, use pushPartial or replacePartial instead. */
   partial(query: Record<string, any>, replace?: boolean) {
-    const currentLocation = this.history.location;
-    const newQuery = this.getSearchObject();
-
-    for (const key of Object.keys(query)) {
-      // removing params with null | undefined
-      if (query[key] === null || query[key] === undefined) {
-        delete newQuery[key];
-      } else {
-        newQuery[key] = query[key];
-      }
-    }
-
-    const updatedUrl = urlUtil.renderUrl(currentLocation.pathname, newQuery);
+    deprecationWarning('LocationService', 'partial', 'replacePartial or pushPartial');
 
     if (replace) {
-      this.history.replace(updatedUrl, this.history.location.state);
+      this.replacePartial(query);
     } else {
-      this.history.push(updatedUrl, this.history.location.state);
+      this.pushPartial(query);
     }
   }
 
-  push(location: H.Path | H.LocationDescriptor) {
+  push(location: H.LocationDescriptor) {
     this.history.push(location);
   }
 
-  replace(location: H.Path | H.LocationDescriptor) {
+  replace(location: H.LocationDescriptor) {
     this.history.replace(location);
   }
 
@@ -98,7 +113,7 @@ export class HistoryWrapper implements LocationService {
     return locationSearchToObject(this.history.location.search);
   }
 
-  /** @deprecated use partial, push or replace instead */
+  /** @deprecated Will be removed in Grafana 9, use replace, push, pushPartial or replacePartial instead. */
   update(options: LocationUpdate) {
     deprecationWarning('LocationSrv', 'update', 'partial, push or replace');
     if (options.partial && options.query) {
@@ -120,7 +135,7 @@ export class HistoryWrapper implements LocationService {
 }
 
 /**
- * @alpha
+ * @public
  * Parses a location search string to an object
  * */
 export function locationSearchToObject(search: string | number): UrlQueryMap {
@@ -137,7 +152,7 @@ export function locationSearchToObject(search: string | number): UrlQueryMap {
 }
 
 /**
- * @alpha
+ * @public
  */
 export let locationService: LocationService = new HistoryWrapper();
 

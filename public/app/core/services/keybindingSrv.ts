@@ -72,11 +72,11 @@ export class KeybindingSrv {
   }
 
   private openSearch() {
-    locationService.partial({ search: 'open' });
+    locationService.pushPartial({ search: 'open' });
   }
 
   private closeSearch() {
-    locationService.partial({ search: null });
+    locationService.pushPartial({ search: null });
   }
 
   private openAlerting() {
@@ -103,22 +103,22 @@ export class KeybindingSrv {
     const search = locationService.getSearchObject();
 
     if (search.editview) {
-      locationService.partial({ editview: null });
+      locationService.pushPartial({ editview: null });
       return;
     }
 
     if (search.inspect) {
-      locationService.partial({ inspect: null, inspectTab: null });
+      locationService.pushPartial({ inspect: null, inspectTab: null });
       return;
     }
 
     if (search.editPanel) {
-      locationService.partial({ editPanel: null, tab: null });
+      locationService.pushPartial({ editPanel: null, tab: null });
       return;
     }
 
     if (search.viewPanel) {
-      locationService.partial({ viewPanel: null, tab: null });
+      locationService.pushPartial({ viewPanel: null, tab: null });
       return;
     }
 
@@ -132,7 +132,7 @@ export class KeybindingSrv {
   }
 
   private showDashEditView() {
-    locationService.partial({
+    locationService.pushPartial({
       editview: 'settings',
     });
   }
@@ -211,18 +211,18 @@ export class KeybindingSrv {
     this.bindWithPanelId('e', (panelId) => {
       if (dashboard.canEditPanelById(panelId)) {
         const isEditing = locationService.getSearchObject().editPanel !== undefined;
-        locationService.partial({ editPanel: isEditing ? null : panelId });
+        locationService.pushPartial({ editPanel: isEditing ? null : panelId });
       }
     });
 
     // view panel
     this.bindWithPanelId('v', (panelId) => {
       const isViewing = locationService.getSearchObject().viewPanel !== undefined;
-      locationService.partial({ viewPanel: isViewing ? null : panelId });
+      locationService.pushPartial({ viewPanel: isViewing ? null : panelId });
     });
 
     this.bindWithPanelId('i', (panelId) => {
-      locationService.partial({ inspect: panelId });
+      locationService.pushPartial({ inspect: panelId });
     });
 
     // jump to explore if permissions allow

@@ -124,7 +124,7 @@ describe('Wrapper', () => {
 
     (datasources.loki.query as Mock).mockReturnValueOnce(makeLogsQueryResponse('different log'));
 
-    locationService.partial({
+    locationService.pushPartial({
       left: JSON.stringify(['now-1h', 'now', 'loki', { expr: '{ label="different"}' }]),
     });
 
@@ -144,7 +144,7 @@ describe('Wrapper', () => {
 
     (datasources.elastic.query as Mock).mockReturnValueOnce(makeMetricsQueryResponse());
 
-    locationService.partial({
+    locationService.pushPartial({
       left: JSON.stringify(['now-1h', 'now', 'elastic', { expr: 'other query' }]),
     });
 
@@ -258,7 +258,7 @@ describe('Wrapper', () => {
     (datasources.loki.query as Mock).mockReturnValue(makeLogsQueryResponse());
     (datasources.elastic.query as Mock).mockReturnValue(makeLogsQueryResponse());
 
-    locationService.partial({
+    locationService.pushPartial({
       left: JSON.stringify(['now-1h', 'now', 'loki', { expr: '{ label="value"}' }]),
       right: JSON.stringify(['now-1h', 'now', 'elastic', { expr: 'error' }]),
     });
@@ -371,7 +371,7 @@ function setup(options?: SetupOptions): { datasources: { [name: string]: DataSou
   locationService.push({ pathname: '/explore' });
 
   if (options?.query) {
-    locationService.partial(options.query);
+    locationService.pushPartial(options.query);
   }
 
   const route = { component: Wrapper };

@@ -67,7 +67,7 @@ export class AlertRuleListUnconnected extends PureComponent<Props> {
   }
 
   onStateFilterChanged = (option: SelectableValue) => {
-    locationService.partial({ state: option.value });
+    locationService.pushPartial({ state: option.value });
   };
 
   onOpenHowTo = () => {

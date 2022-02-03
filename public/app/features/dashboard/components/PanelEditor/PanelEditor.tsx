@@ -124,7 +124,7 @@ export class PanelEditorUnconnected extends PureComponent<Props> {
   };
 
   onBack = () => {
-    locationService.partial({
+    locationService.pushPartial({
       editPanel: null,
       tab: null,
       showCategory: null,
@@ -137,7 +137,7 @@ export class PanelEditorUnconnected extends PureComponent<Props> {
   };
 
   onOpenDashboardSettings = () => {
-    locationService.partial({
+    locationService.pushPartial({
       editview: 'settings',
     });
   };
@@ -175,7 +175,7 @@ export class PanelEditorUnconnected extends PureComponent<Props> {
   };
 
   onChangeTab = (tab: PanelEditorTab) => {
-    locationService.partial({
+    locationService.pushPartial({
       tab: tab.id,
     });
   };
@@ -422,7 +422,11 @@ export class PanelEditorUnconnected extends PureComponent<Props> {
   }
 
   onGoBackToDashboard = () => {
-    locationService.partial({ editPanel: null, tab: null, showCategory: null });
+    locationService.pushPartial({
+      editPanel: null,
+      tab: null,
+      showCategory: null,
+    });
   };
 
   onConfirmAndDismissLibarayPanelModel = () => {

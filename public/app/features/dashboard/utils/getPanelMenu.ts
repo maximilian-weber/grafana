@@ -26,14 +26,14 @@ export function getPanelMenu(
 ): PanelMenuItem[] {
   const onViewPanel = (event: React.MouseEvent<any>) => {
     event.preventDefault();
-    locationService.partial({
+    locationService.pushPartial({
       viewPanel: panel.id,
     });
   };
 
   const onEditPanel = (event: React.MouseEvent<any>) => {
     event.preventDefault();
-    locationService.partial({
+    locationService.pushPartial({
       editPanel: panel.id,
     });
   };
@@ -54,7 +54,7 @@ export function getPanelMenu(
   };
 
   const onInspectPanel = (tab?: string) => {
-    locationService.partial({
+    locationService.pushPartial({
       inspect: panel.id,
       inspectTab: tab,
     });
