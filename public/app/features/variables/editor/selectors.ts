@@ -7,7 +7,7 @@ import {
 
 export function getAdhocVariableState(
   editorState: VariableEditorState
-): VariableEditorState<AdHocVariableEditorState> | null {
+): VariableEditorState<AdHocVariableEditorState> | VariableEditorState<null> {
   const { extended, ...rest } = editorState;
 
   if (extended && 'dataSources' in extended) {
@@ -17,7 +17,7 @@ export function getAdhocVariableState(
     };
   }
 
-  return null;
+  return { ...rest, extended: null };
 }
 
 export function getDatasourceVariableState(editorState: VariableEditorState): DataSourceVariableEditorState | null {

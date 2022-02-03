@@ -19,12 +19,14 @@ export interface QueryVariableEditorState {
 
 type VariableEditorExtension = AdHocVariableEditorState | DataSourceVariableEditorState | QueryVariableEditorState;
 
-export interface VariableEditorState<Extension extends VariableEditorExtension = VariableEditorExtension> {
+export interface VariableEditorState<
+  Extension extends VariableEditorExtension | null = VariableEditorExtension | null
+> {
   id: string;
   name: string;
   errors: Record<string, string>;
   isValid: boolean;
-  extended: Extension | null;
+  extended: Extension;
 }
 
 export const initialVariableEditorState: VariableEditorState = {

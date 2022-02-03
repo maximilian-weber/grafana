@@ -37,9 +37,8 @@ export class AdHocVariableEditorUnConnected extends PureComponent<Props> {
 
   render() {
     const { variable, editor } = this.props;
-
-    const dataSources = editor?.extended?.dataSources || [];
-    const infoText = editor?.extended?.infoText || null;
+    const dataSources = editor.extended?.dataSources ?? [];
+    const infoText = editor.extended?.infoText ?? null;
     const options = dataSources.map((ds) => ({ label: ds.text, value: ds.value }));
     const value = options.find((o) => o.value?.uid === variable.datasource?.uid) ?? options[0];
 
